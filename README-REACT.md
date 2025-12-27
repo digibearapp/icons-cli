@@ -29,27 +29,6 @@ dgbear scaffold -f react -v 1.0.0 -o ./src/components/digibear-icons
 
 ## Usage
 
-### Import the Components
-
-```jsx
-import React from "react";
-import {
-  DgbIcon,
-  DgbIconGroup,
-  DgbIconScope,
-} from "./components/digibear-icons";
-
-function MyComponent() {
-  return (
-    <div>
-      <DgbIcon name="heart" iconStyle="duotone" />
-    </div>
-  );
-}
-
-export default MyComponent;
-```
-
 ### Set up the Icon Scope
 
 The `DgbIconScope` component provides themes and default properties for all icons within its subtree:
