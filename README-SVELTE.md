@@ -29,20 +29,6 @@ dgbear scaffold -f svelte -v 1.0.0 -o ./src/lib/digibear-icons
 
 ## Usage
 
-### Import the Components
-
-```svelte
-<script>
-  import { DgbIcon, DgbIconGroup, DgbIconScope } from '$lib/digibear-icons';
-  // RECOMMENDED: Import from generated definitions
-  import { dgbHeart } from './digibear-icon-definitions';
-</script>
-
-<div>
-  <DgbIcon name="heart" iconStyle="duotone" />
-</div>
-```
-
 ### Set up the Icon Scope
 
 The `DgbIconScope` component provides themes and default properties for all icons within its subtree:
@@ -50,8 +36,8 @@ The `DgbIconScope` component provides themes and default properties for all icon
 ```svelte
 <script>
   import { DgbIcon, DgbIconScope } from '$lib/digibear-icons';
-  // RECOMMENDED: Import from generated definitions
-  import { dgbHeart } from './digibear-icon-definitions';
+  // RECOMMENDED: Import the generated registry
+  import { dgbIconRegistry } from "./dgb-registry";
 
   // Optional themes configuration
   const themes = {
@@ -65,7 +51,7 @@ The `DgbIconScope` component provides themes and default properties for all icon
   };
 </script>
 
-<DgbIconScope {themes} defaultTheme="primary" defaultVariant="default">
+<DgbIconScope registry={dgbIconRegistry} themes={themes} defaultTheme="primary" defaultVariant="default">
   <!-- Your app content -->
   <DgbIcon name="heart" iconStyle="fill" />
 </DgbIconScope>
@@ -78,7 +64,6 @@ The `DgbIconScope` component provides themes and default properties for all icon
 ```svelte
 <script>
   import { DgbIcon } from '$lib/digibear-icons';
-  import { dgbHeart } from './digibear-icon-definitions';
 </script>
 
 <DgbIcon
