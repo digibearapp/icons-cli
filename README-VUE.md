@@ -29,22 +29,6 @@ dgbear scaffold -f vue -v 1.0.0 -o ./src/components/digibear-icons
 
 ## Usage
 
-### Import the Components
-
-```vue
-<template>
-  <div>
-    <DgbIcon name="heart" iconStyle="duotone" />
-  </div>
-</template>
-
-<script setup>
-import { DgbIcon } from "./components/digibear-icons";
-// RECOMMENDED: Import from generated definitions
-import { dgbHeart } from "./digibear-icon-definitions";
-</script>
-```
-
 ### Set up the Icon Scope
 
 The `DgbIconScope` component provides themes and default properties for all icons within its subtree:
@@ -52,6 +36,7 @@ The `DgbIconScope` component provides themes and default properties for all icon
 ```vue
 <template>
   <DgbIconScope
+    :registry="dgbIconRegistry"
     :themes="themes"
     defaultTheme="primary"
     defaultVariant="default"
@@ -63,8 +48,8 @@ The `DgbIconScope` component provides themes and default properties for all icon
 
 <script setup>
 import { DgbIcon, DgbIconScope } from "./components/digibear-icons";
-// RECOMMENDED: Import from generated definitions
-import { dgbHeart } from "./digibear-icon-definitions";
+// RECOMMENDED: Import the generated registry
+import { dgbIconRegistry } from "./dgb-registry";
 
 // Optional themes configuration
 const themes = {
@@ -99,7 +84,6 @@ const themes = {
 
 <script setup>
 import { DgbIcon } from "./components/digibear-icons";
-import { dgbHeart } from "./digibear-icon-definitions";
 </script>
 ```
 
