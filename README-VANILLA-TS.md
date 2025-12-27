@@ -19,16 +19,6 @@ pnpm add @digibeardev/icons-core
 
 ## Usage
 
-### Import the Components
-
-```typescript
-// Import the web components
-import "@digibeardev/icons-core/components";
-
-// Import the icon definitions
-import { dgbHeart, dgbStar, dgbBell } from "./digibear-icon-definitions";
-```
-
 ### Set up the Icon Scope
 
 The `dgb-icon-scope` component provides themes and default properties for all icons within its subtree:
@@ -42,12 +32,17 @@ The `dgb-icon-scope` component provides themes and default properties for all ic
   default-size="32"
 >
   <!-- Your app content -->
-  <dgb-icon data-icon="heart"></dgb-icon>
+  <dgb-icon name="heart"></dgb-icon>
 </dgb-icon-scope>
 
 <script>
+  // Import the web components and registry
+  import "@digibeardev/icons-core/components";
+  import { dgbIconRegistry } from "./dgb-registry";
+
   // Set up themes
   const scope = document.getElementById("icon-scope");
+  scope.registry = dgbIconRegistry;
   scope.themes = {
     primary: {
       default: {
@@ -57,11 +52,6 @@ The `dgb-icon-scope` component provides themes and default properties for all ic
       },
     },
   };
-
-  // Initialize icons
-  const heartIcon = document.querySelector('[data-icon="heart"]');
-  heartIcon.icons = dgbHeart;
-  heartIcon.name = "heart";
 </script>
 ```
 
@@ -70,66 +60,34 @@ The `dgb-icon-scope` component provides themes and default properties for all ic
 `dgb-icon` is the actual component you'll use in your HTML:
 
 ```html
-<dgb-icon data-icon="heart"></dgb-icon>
-
-<script>
-  // Initialize the icon
-  const heartIcon = document.querySelector('[data-icon="heart"]');
-  heartIcon.icons = dgbHeart;
-  heartIcon.name = "heart";
-  heartIcon.iconStyle = "duotone";
-  heartIcon.size = 48;
-  heartIcon.color = "red";
-  heartIcon.secondaryColor = "pink";
-  heartIcon.opacity = 0.8;
-  heartIcon.secondaryOpacity = 0.4;
-</script>
+<dgb-icon
+  name="heart"
+  iconStyle="duotone"
+  size="48"
+  color="red"
+  secondaryColor="pink"
+  opacity="0.8"
+  secondaryOpacity="0.4"
+  strokeWidth="0.7"
+></dgb-icon>
 ```
 
-> **Note:** Each dgb-icon component requires an `icons` property with an array of possible icon definitions. The component will select the best icon based on the optional `name` and `iconStyle` properties. If no `name` is provided, the component will use the first icon in the array of the corresponding style. If no `iconStyle` is provided, the component will use the first icon in the array.
+> **Note:** Each DgbIcon component will get the icon based on the `name` (required) and `iconStyle` (optional) props. If no iconStyle is given, the icon will use the iconStyle from the closest DgbIconGroup or DgbIconScope or default to `duotone`. If the icon doesn't exist in the registry, the `questionBadge` icon will be rendered and a warning will be displayed in the console to register the icon.
 
 ### Use Icon Groups
 
 Use `dgb-icon-group` when you need multiple icons to share the same properties:
 
 ```html
-<dgb-icon-group id="icon-group">
-  <dgb-icon data-icon="heart"></dgb-icon>
-  <dgb-icon data-icon="star"></dgb-icon>
-  <dgb-icon data-icon="bell" color="red" size="24"></dgb-icon>
+<dgb-icon-group size="32" color="blue" opacity="0.9" id="icon-group">
+  <dgb-icon name="heart" iconStyle="fill"></dgb-icon>
+  <dgb-icon
+    name="star"
+    iconStyle="duotone"
+    secondaryColor="lightblue"
+  ></dgb-icon>
+  <dgb-icon name="bell" iconStyle="line" color="red" size="24"></dgb-icon>
 </dgb-icon-group>
-
-<script>
-  // Set group properties
-  const group = document.getElementById("icon-group");
-  group.size = 32;
-  group.color = "blue";
-  group.opacity = 0.9;
-
-  // Initialize icons
-  const icons = document.querySelectorAll("[data-icon]");
-  icons.forEach((icon) => {
-    const iconType = icon.getAttribute("data-icon");
-    switch (iconType) {
-      case "heart":
-        icon.icons = dgbHeart;
-        icon.name = "heart";
-        icon.iconStyle = "fill";
-        break;
-      case "star":
-        icon.icons = dgbStar;
-        icon.name = "star";
-        icon.iconStyle = "duotone";
-        icon.secondaryColor = "lightblue";
-        break;
-      case "bell":
-        icon.icons = dgbBell;
-        icon.name = "bell";
-        icon.iconStyle = "line";
-        break;
-    }
-  });
-</script>
 ```
 
 ### Nested Icon Groups
@@ -137,38 +95,15 @@ Use `dgb-icon-group` when you need multiple icons to share the same properties:
 Groups can be nested to create complex icon hierarchies:
 
 ```html
-<dgb-icon-group id="danger-group">
-  <dgb-icon data-icon="heart"></dgb-icon>
+<dgb-icon-group id="danger-group" theme="danger" color="#ef4444">
+  <dgb-icon name="heart" iconStyle="duotone"></dgb-icon>
 
   <div style="margin-top: 16px; padding: 8px; background-color: #fffbeb;">
-    <dgb-icon-group id="warning-group">
-      <dgb-icon data-icon="star"></dgb-icon>
+    <dgb-icon-group id="warning-group" theme="warning" color="orange">
+      <dgb-icon name="star" iconStyle="duotone"></dgb-icon>
     </dgb-icon-group>
   </div>
 </dgb-icon-group>
-
-<script>
-  // Set up the danger group
-  const dangerGroup = document.getElementById("danger-group");
-  dangerGroup.theme = "danger";
-  dangerGroup.color = "#ef4444";
-
-  // Set up the warning group
-  const warningGroup = document.getElementById("warning-group");
-  warningGroup.theme = "warning";
-  warningGroup.color = "orange";
-
-  // Initialize icons
-  const heartIcon = document.querySelector('[data-icon="heart"]');
-  heartIcon.icons = dgbHeart;
-  heartIcon.name = "heart";
-  heartIcon.iconStyle = "duotone";
-
-  const starIcon = document.querySelector('[data-icon="star"]');
-  starIcon.icons = dgbStar;
-  starIcon.name = "star";
-  starIcon.iconStyle = "duotone";
-</script>
 ```
 
 ### Using Themes
@@ -176,23 +111,31 @@ Groups can be nested to create complex icon hierarchies:
 Themes provide a way to define consistent styling across your application:
 
 ```html
-<dgb-icon-scope id="themed-scope">
-  <dgb-icon data-icon="heart"></dgb-icon>
+<dgb-icon-scope
+  id="themed-scope"
+  defaultTheme="primary"
+  defaultVariant="default"
+>
+  <dgb-icon name="heart"></dgb-icon>
 
   <div class="danger-section">
-    <dgb-icon-group id="danger-group">
-      <dgb-icon data-icon="heart"></dgb-icon>
+    <dgb-icon-group id="danger-group" theme="danger">
+      <dgb-icon name="heart"></dgb-icon>
     </dgb-icon-group>
   </div>
 
-  <div class="highlight-section">
+  <div class="highlight-section" theme="primary" variant="highlight">
     <dgb-icon-group id="highlight-group">
-      <dgb-icon data-icon="star"></dgb-icon>
+      <dgb-icon name="star"></dgb-icon>
     </dgb-icon-group>
   </div>
 </dgb-icon-scope>
 
 <script>
+  // Import the web components and registry
+  import "@digibeardev/icons-core/components";
+  import { dgbIconRegistry } from "./dgb-registry";
+
   // Define your themes
   const myThemes = {
     primary: {
@@ -217,35 +160,8 @@ Themes provide a way to define consistent styling across your application:
 
   // Set up the scope
   const scope = document.getElementById("themed-scope");
+  scope.registry = dgbIconRegistry;
   scope.themes = myThemes;
-  scope.defaultTheme = "primary";
-  scope.defaultVariant = "default";
-
-  // Set up the groups
-  const dangerGroup = document.getElementById("danger-group");
-  dangerGroup.theme = "danger";
-
-  const highlightGroup = document.getElementById("highlight-group");
-  highlightGroup.theme = "primary";
-  highlightGroup.variant = "highlight";
-
-  // Initialize icons
-  const icons = document.querySelectorAll("[data-icon]");
-  icons.forEach((icon) => {
-    const iconType = icon.getAttribute("data-icon");
-    switch (iconType) {
-      case "heart":
-        icon.icons = dgbHeart;
-        icon.name = "heart";
-        icon.iconStyle = "duotone";
-        break;
-      case "star":
-        icon.icons = dgbStar;
-        icon.name = "star";
-        icon.iconStyle = "duotone";
-        break;
-    }
-  });
 </script>
 ```
 
@@ -253,6 +169,7 @@ Themes provide a way to define consistent styling across your application:
 
 ### dgb-icon-scope Element Properties
 
+- `registry`: A CLI generated registry containing all definitions for the icons you need. (required)
 - `themes`: Theme definitions for themed icons
 - `defaultIconStyle`: Default icon style ("line", "fill", "duotone")
 - `defaultTheme`: Default theme name to use from defined themes
@@ -262,6 +179,7 @@ Themes provide a way to define consistent styling across your application:
 - `defaultOpacity`: Default opacity for primary color (0-1)
 - `defaultSecondaryColor`: Default secondary color (leave undefined to use same as primary)
 - `defaultSecondaryOpacity`: Default opacity for secondary color (0-1)
+- `defaultStrokeWidth`: Default stroke width for all icons (default : 1.5)
 
 > **Note**: While explicit colors can be specified, it's generally recommended to use themes and variants or leave colors undefined to inherit the `currentColor` from the parent element. This ensures icons naturally match the text color they're displayed with.
 
@@ -275,12 +193,12 @@ Themes provide a way to define consistent styling across your application:
 - `opacity`: Opacity for primary color (0-1)
 - `secondaryColor`: Secondary color for duotone icons
 - `secondaryOpacity`: Opacity for secondary color (0-1)
+- `strokeWidth`: The stroke width for all icons in the group (default : 1.5)
 
 > **Note**: While explicit colors can be specified, it's generally recommended to use themes and variants or leave colors undefined to inherit the `currentColor` from the parent element. This ensures icons naturally match the text color they're displayed with.
 
 ### dgb-icon Element Properties
 
-- `icons`: Array of icon definitions (required)
 - `name`: Icon name (optional)
 - `iconStyle`: Icon style - "line", "fill", or "duotone" (optional)
 - `theme`: Theme name to use from defined themes
@@ -290,6 +208,7 @@ Themes provide a way to define consistent styling across your application:
 - `opacity`: Opacity for primary color (0-1)
 - `secondaryColor`: Secondary color for duotone icons
 - `secondaryOpacity`: Opacity for secondary color (0-1)
+- `strokeWidth`: The stroke width of the icon (default : 1.5)
 - Any standard SVG attributes are also supported
 
 > **Note**: While explicit colors can be specified, it's generally recommended to use themes and variants or leave colors undefined to inherit the `currentColor` from the parent element. This ensures icons naturally match the text color they're displayed with.
@@ -304,8 +223,6 @@ dgbear merge-custom-icons
 
 This ensures that all custom icons from your config are properly embedded in the manifest file, making it portable and ready to use in other projects.
 
-When importing icons, it's recommended to use the CLI generated icon definitions file (e.g., `digibear-icon-definitions.ts`) rather than importing directly from `@digibeardev/icons-core`. This ensures you're using the exact icons specified in your manifest, including any custom icons. The generated file bundles all specified styles for each icon in arrays, making them easier to use.
-
 ## Best Practices
 
 - **Property Inheritance Priority**: dgb-icon > dgb-icon-group > dgb-icon-scope
@@ -315,4 +232,4 @@ When importing icons, it's recommended to use the CLI generated icon definitions
 - Initialize icons with their definitions before setting other properties
 - Set themes on the scope element before initializing icons
 
-<img src="https://gbiskldbvwxjvxtdxjko.supabase.co/storage/v1/object/public/brand/Logo-Sticker.svg" alt="Digibear Icon Logo" width="42" style="vertical-align: -.9rem;">Copyright© 2025 Digibear Icons
+<img src="https://gbiskldbvwxjvxtdxjko.supabase.co/storage/v1/object/public/brand/Logo-Sticker.svg" alt="Digibear Icon Logo" width="42" style="vertical-align: -.9rem;">Digibear Icons - 2025
