@@ -434,78 +434,103 @@ Here are some quick examples for popular frameworks:
 #### React
 
 ```jsx
-import { DgbIcon, DgbIconScope } from "./digibear-icons";
-// RECOMMENDED: Import from generated icon definitions file (includes all styles from your manifest)
-import { dgbHeart } from "./digibear-icon-definitions";
-// OR for quick start or small projects:
-// Import individual styles directly from core library
-import {
-  dgbHeartLine,
-  dgbHeartFill,
-  dgbHeartDuotone,
-} from "@digibeardev/icons-core";
+import React from "react";
+import { DgbIcon, DgbIconScope } from "./components/digibear-icons";
+// RECOMMENDED: Import the generated registry
+import { dgbIconRegistry } from "./dgb-registry";
 
-function MyComponent() {
+function App() {
+  // Optional themes configuration
+  const themes = {
+    primary: {
+      default: {
+        color: "var(--color-primary-600)",
+        secondaryColor: "var(--color-primary-300)",
+        secondaryOpacity: 0.3,
+      },
+    },
+  };
+
   return (
-    <DgbIconScope>
-      {/* Pass icons array directly to DgbIcon */}
+    <DgbIconScope
+      registry={dgbIconRegistry}
+      themes={themes}
+      defaultTheme="primary"
+      defaultVariant="default"
+    >
+      {/* Your app content */}
       <DgbIcon name="heart" iconStyle="fill" />
-
-      {/* Or use a shared array for multiple icons */}
-      <DgbIcon name="heart" color="red" iconStyle="line" />
     </DgbIconScope>
   );
 }
+
+export default App;
 ```
 
 #### Vue
 
 ```vue
 <template>
-  <!-- Pass icons array directly to each DgbIcon -->
-  <DgbIcon name="heart" iconStyle="fill" />
-  <DgbIcon name="star" :color="'gold'" iconStyle="line" />
+  <DgbIconScope
+    :registry="dgbIconRegistry"
+    :themes="themes"
+    defaultTheme="primary"
+    defaultVariant="default"
+  >
+    <!-- Your app content -->
+    <DgbIcon name="heart" iconStyle="fill" />
+  </DgbIconScope>
 </template>
 
 <script setup>
-// RECOMMENDED: Import from generated icon definitions file (includes all styles from your manifest)
-import { dgbHeart, dgbStar } from "./digibear-icon-definitions";
-// OR for quick start or small projects:
-// Import individual styles directly from core library
-import {
-  dgbHeartLine,
-  dgbHeartFill,
-  dgbHeartDuotone,
-  dgbStarLine,
-  dgbStarFill,
-  dgbStarDuotone,
-} from "@digibeardev/icons-core";
+import { DgbIcon, DgbIconScope } from "./components/digibear-icons";
+// RECOMMENDED: Import the generated registry
+import { dgbIconRegistry } from "./dgb-registry";
+
+// Optional themes configuration
+const themes = {
+  primary: {
+    default: {
+      color: "var(--color-primary-600)",
+      secondaryColor: "var(--color-primary-300)",
+      secondaryOpacity: 0.3,
+    },
+  },
+};
 </script>
 ```
 
 #### Web Components (Vanilla TS)
 
 ```html
-<dgb-icon name="heart" icon-style="fill"></dgb-icon>
-<dgb-icon name="star" color="gold" icon-style="line"></dgb-icon>
+<dgb-icon-scope
+  id="icon-scope"
+  default-theme="primary"
+  default-variant="default"
+  default-icon-style="duotone"
+  default-size="32"
+>
+  <!-- Your app content -->
+  <dgb-icon name="heart"></dgb-icon>
+</dgb-icon-scope>
 
 <script>
-  // RECOMMENDED: Import from generated icon definitions file (includes all styles from your manifest)
-  import { dgbHeart, dgbStar } from "./digibear-icon-definitions";
-  // OR for quick start or small projects:
-  // Import individual styles directly from core library
-  import {
-    dgbHeartLine,
-    dgbHeartFill,
-    dgbHeartDuotone,
-    dgbStarLine,
-    dgbStarFill,
-    dgbStarDuotone,
-  } from "@digibeardev/icons-core";
+  // Import the web components and registry
+  import "@digibeardev/icons-core/components";
+  import { dgbIconRegistry } from "./dgb-registry";
 
-  // Set icons for each component
-  document.querySelector('dgb-icon[name="heart"]').icons = dgbHeart;
-  document.querySelector('dgb-icon[name="star"]').icons = dgbStar;
+  // Set up themes
+  const scope = document.getElementById("icon-scope");
+  scope.registry = dgbIconRegistry;
+  scope.themes = {
+    primary: {
+      default: {
+        color: "var(--color-primary-600, #3b82f6)",
+        secondaryColor: "var(--color-primary-300, #93c5fd)",
+        secondaryOpacity: 0.3,
+      },
+    },
+  };
 </script>
 ```
 
