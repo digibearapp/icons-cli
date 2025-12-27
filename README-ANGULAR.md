@@ -93,7 +93,7 @@ import { dgbHeart } from "./digibear-icon-definitions";
       defaultVariant="default"
     >
       <!-- Your app content -->
-      <dgb-icon [icons]="dgbHeart" name="heart" iconStyle="fill"></dgb-icon>
+      <dgb-icon name="heart" iconStyle="fill"></dgb-icon>
       <router-outlet></router-outlet>
     </dgb-icon-scope>
   `,
@@ -127,7 +127,6 @@ import { dgbHeart } from "./digibear-icon-definitions";
   imports: [DgbIconComponent],
   template: `
     <dgb-icon
-      [icons]="dgbHeart"
       name="heart"
       iconStyle="duotone"
       size="48"
@@ -135,13 +134,14 @@ import { dgbHeart } from "./digibear-icon-definitions";
       secondaryColor="pink"
       opacity="0.8"
       secondaryOpacity="0.4"
+      strokeWidth="0.7"
     ></dgb-icon>
   `,
 })
 export class IconExampleComponent {}
 ```
 
-> **Note:** Each DgbIcon component requires an `icons` prop with an array of possible icon definitions. The component will select the best icon based on the optional `name` and `iconStyle` props. If no `name` is provided, the component will use the first icon in the array of the corresponding style. If no `iconStyle` is provided, the component will use the first icon in the array.
+> **Note:** Each DgbIcon component will get the icon based on the `name` (required) and `iconStyle` (optional) props. If no iconStyle is given, the icon will use the iconStyle from the closest DgbIconGroup or DgbIconScope or default to `duotone`. If the icon doesn't exist in the registry, the `questionBadge` icon will be rendered and a warning will be displayed in the console to register the icon.
 
 ### Use Icon Groups
 
@@ -150,8 +150,6 @@ Use `DgbIconGroup` when you need multiple icons to share the same properties:
 ```ts
 import { Component } from "@angular/core";
 import { DgbIconComponent, DgbIconGroupComponent } from "@/digibear-icons";
-// Import from generated definitions
-import { dgbHeart, dgbStar, dgbBell } from "./digibear-icon-definitions";
 
 @Component({
   selector: "app-icon-group-example",
@@ -159,24 +157,17 @@ import { dgbHeart, dgbStar, dgbBell } from "./digibear-icon-definitions";
   imports: [DgbIconComponent, DgbIconGroupComponent],
   template: `
     <dgb-icon-group size="32" color="blue" opacity="0.9">
-      <dgb-icon [icons]="dgbHeart" name="heart" iconStyle="fill"></dgb-icon>
+      <dgb-icon name="heart" iconStyle="fill"></dgb-icon>
       <!-- Final: size=32, color="blue", opacity=0.9, iconStyle="fill" -->
 
       <dgb-icon
-        [icons]="dgbStar"
         name="star"
         iconStyle="duotone"
         secondaryColor="lightblue"
       ></dgb-icon>
       <!-- Final: size=32, color="blue", opacity=0.9, iconStyle="duotone", secondaryColor="lightblue" -->
 
-      <dgb-icon
-        [icons]="dgbBell"
-        name="bell"
-        iconStyle="line"
-        size="24"
-        color="red"
-      ></dgb-icon>
+      <dgb-icon name="bell" iconStyle="line" size="24" color="red"></dgb-icon>
       <!-- Final: size=24, color="red", opacity=0.9, iconStyle="line" -->
     </dgb-icon-group>
   `,
@@ -191,7 +182,6 @@ Groups can be nested to create complex icon hierarchies:
 ```ts
 import { Component } from "@angular/core";
 import { DgbIconComponent, DgbIconGroupComponent } from "@/digibear-icons";
-import { dgbHeart, dgbStar } from "./digibear-icon-definitions";
 
 @Component({
   selector: "app-nested-groups-example",
@@ -199,16 +189,12 @@ import { dgbHeart, dgbStar } from "./digibear-icon-definitions";
   imports: [DgbIconComponent, DgbIconGroupComponent],
   template: `
     <dgb-icon-group theme="danger" color="#ef4444">
-      <dgb-icon [icons]="dgbHeart" name="heart" iconStyle="duotone"></dgb-icon>
+      <dgb-icon name="heart" iconStyle="duotone"></dgb-icon>
 
       <!-- Nested group inherits danger theme but overrides color -->
       <div style="margin-top: 16px; padding: 8px; background-color: #fffbeb;">
         <dgb-icon-group color="orange">
-          <dgb-icon
-            [icons]="dgbStar"
-            name="star"
-            iconStyle="duotone"
-          ></dgb-icon>
+          <dgb-icon name="star" iconStyle="duotone"></dgb-icon>
         </dgb-icon-group>
       </div>
     </dgb-icon-group>
@@ -228,7 +214,7 @@ import {
   DgbIconGroupComponent,
   DgbIconScopeComponent,
 } from "@/digibear-icons";
-import { dgbHeart, dgbStar } from "./digibear-icon-definitions";
+import { dgbIconRegistry } from "./dgb-registry";
 
 @Component({
   selector: "app-themed-icons",
@@ -236,32 +222,25 @@ import { dgbHeart, dgbStar } from "./digibear-icon-definitions";
   imports: [DgbIconComponent, DgbIconGroupComponent, DgbIconScopeComponent],
   template: `
     <dgb-icon-scope
+      [registry]="registry"
       [themes]="myThemes"
       defaultTheme="primary"
       defaultVariant="default"
     >
       <!-- Using themed icons with default theme -->
-      <dgb-icon [icons]="dgbHeart" name="heart" iconStyle="duotone"></dgb-icon>
+      <dgb-icon name="heart" iconStyle="duotone"></dgb-icon>
 
       <!-- Using a specific theme via a group -->
       <div class="danger-section">
         <dgb-icon-group theme="danger">
-          <dgb-icon
-            [icons]="dgbHeart"
-            name="heart"
-            iconStyle="duotone"
-          ></dgb-icon>
+          <dgb-icon name="heart" iconStyle="duotone"></dgb-icon>
         </dgb-icon-group>
       </div>
 
       <!-- Using a specific variant -->
       <div class="highlight-section">
         <dgb-icon-group theme="primary" variant="highlight">
-          <dgb-icon
-            [icons]="dgbStar"
-            name="star"
-            iconStyle="duotone"
-          ></dgb-icon>
+          <dgb-icon name="star" iconStyle="duotone"></dgb-icon>
         </dgb-icon-group>
       </div>
     </dgb-icon-scope>
@@ -289,6 +268,7 @@ export class ThemedIconsComponent {
       },
     },
   };
+  registry = dgbIconRegistry;
 }
 ```
 
@@ -296,6 +276,7 @@ export class ThemedIconsComponent {
 
 ### DgbIconScope Component Inputs
 
+- `registry`: A CLI generated registry containing all definitions for the icons you need. (required)
 - `themes` : Theme definitions for themed icons
 - `defaultIconStyle` : Default icon style ("line", "fill", "duotone")
 - `defaultTheme` : Default theme name to use from defined themes
@@ -305,6 +286,7 @@ export class ThemedIconsComponent {
 - `defaultOpacity` : Default opacity for primary color (0-1)
 - `defaultSecondaryColor` : Default secondary color (leave undefined to use same as primary)
 - `defaultSecondaryOpacity` : Default opacity for secondary color (0-1)
+- `defaultStrokeWidth`: Default stroke width for all icons (default : 1.5)
 
 > **Note**: While explicit colors can be specified, it's generally recommended to use themes and variants or leave colors undefined to inherit the `currentColor` from the parent element. This ensures icons naturally match the text color they're displayed with.
 
@@ -318,12 +300,12 @@ export class ThemedIconsComponent {
 - `opacity` : Opacity for primary color (0-1)
 - `secondaryColor` : Secondary color for duotone icons
 - `secondaryOpacity` : Opacity for secondary color (0-1)
+- `strokeWidth`: The stroke width for all icons in the group (default : 1.5)
 
 > **Note**: While explicit colors can be specified, it's generally recommended to use themes and variants or leave colors undefined to inherit the `currentColor` from the parent element. This ensures icons naturally match the text color they're displayed with.
 
 ### DgbIcon Component Inputs
 
-- `icons` : Array of icon definitions (required)
 - `name` : Icon name (required)
 - `iconStyle` : Icon style - "line", "fill", or "duotone" (required)
 - `theme` : Theme name to use from defined themes
@@ -333,6 +315,7 @@ export class ThemedIconsComponent {
 - `opacity` : Opacity for primary color (0-1)
 - `secondaryColor` : Secondary color for duotone icons
 - `secondaryOpacity` : Opacity for secondary color (0-1)
+- `strokeWidth`: The stroke width of the icon (default : 1.5)
 - `class` : Additional CSS classes
 - Any standard SVG attributes are also supported
 
@@ -348,8 +331,6 @@ dgbear merge-custom-icons
 
 This ensures that all custom icons from your config are properly embedded in the manifest file, making it portable and ready to use in other projects.
 
-When importing icons, it's recommended to use the CLI generated icon definitions file (e.g., `digibear-icon-definitions.ts`) rather than importing directly from `@digibeardev/icons-core`. This ensures you're using the exact icons specified in your manifest, including any custom icons. The generated file bundles all specified styles for each icon in arrays, making them easier to use.
-
 ## Best Practices
 
 - **Property Inheritance Priority**: DgbIcon > DgbIconGroup > DgbIconScope
@@ -357,4 +338,4 @@ When importing icons, it's recommended to use the CLI generated icon definitions
 - Use nested icon groups to create complex hierarchies of styling
 - For deeply nested components, place a DgbIconGroup at the appropriate level in the hierarchy to apply consistent styling
 
-<img src="https://gbiskldbvwxjvxtdxjko.supabase.co/storage/v1/object/public/brand/Logo-Sticker.svg" alt="Digibear Icon Logo" width="42" style="vertical-align: -.9rem;">Copyright© 2025 Digibear Icons
+<img src="https://gbiskldbvwxjvxtdxjko.supabase.co/storage/v1/object/public/brand/Logo-Sticker.svg" alt="Digibear Icon Logo" width="42" style="vertical-align: -.9rem;">Digibear Icons - 2025
