@@ -218,8 +218,8 @@ flutter: "./flutter-icons"
 js: "./digibear-icon-definitions.js"
 # 👇 json output path (path type: file)
 json: "./digibear-icon-definitions.json"
-# 👇 sf-symbols output path (path type: folder)
-sf-symbols: "./sf-symbols-icons"
+# 👇 swiftui output path (path type: folder)
+swiftui: "./swiftui-icons"
 # 👇 svg output path (path type: folder)
 svg: "./svg-icons"
 # Optional: Custom icons (only paths no SVG wrapping tag)
@@ -232,7 +232,7 @@ svg: "./svg-icons"
 
 # Optional: Scaffold configuration for framework integration
 # scaffold:
-#   # Framework to scaffold (flutter, sf-symbols, android, angular, qwik, react, solid, svelte, vue)
+#   # Framework to scaffold (flutter, swiftui, android, angular, qwik, react, solid, svelte, vue)
 #   framework: "flutter"
 #   # Version of the framework
 #   version: "1.0.0"
@@ -368,11 +368,11 @@ The Digibear Icons CLI currently supports the following frameworks:
 
 ### Platform Frameworks
 
-| Framework  | Versions | Description                                |
-| ---------- | -------- | ------------------------------------------ |
-| Flutter    | 1.0.0    | Flutter painter and widget implementations |
-| SF Symbols | 1.0.0    | SwiftUI components for iOS/macOS           |
-| Android    | 1.0.0    | Android Vector Drawable resources          |
+| Framework | Versions | Description                                |
+| --------- | -------- | ------------------------------------------ |
+| Flutter   | 1.0.0    | Flutter painter and widget implementations |
+| SwiftUI   | 1.0.0    | SwiftUI components for iOS/macOS           |
+| Android   | 1.0.0    | ImageVector files for Android              |
 
 ## <img src="https://gbiskldbvwxjvxtdxjko.supabase.co/storage/v1/object/public/brand/db-question-badge.svg" alt="Question Mark Icon Inside A Badge" width="26" style="vertical-align: -0.36rem;"> What Gets Generated?
 
@@ -383,8 +383,8 @@ The `gen` command can generate various asset formats:
 - **TypeScript/JavaScript/JSON**: Icon definitions for direct import
 - **SVG**: Scalable Vector Graphics files
 - **Flutter**: Dart code for Flutter apps (as CustomPainters)
-- **SF Symbols**: Swift code for iOS/macOS apps (as SF Symbols formatted SVGs)
-- **Android**: Vector Drawable XML files (layered in case of multi-color icons or a single file for monochrome icons)
+- **SwiftUI**: Swift code for iOS/macOS/tvOS apps (as SwiftUI `Shape` definitions)
+- **Android**: Kotlin code for Android/Jetpack Compose (as `ImageVector` definitions)
 
 ### Framework Components
 
@@ -424,7 +424,7 @@ For detailed integration instructions, please refer to the framework-specific RE
 | Solid                       | [README-solid.md](./README-SOLID.md)           |
 | Vanilla TS (Web Components) | [README-vanilla-ts.md](./README-VANILLA-TS.md) |
 | Flutter                     | [README-flutter.md](./README-FLUTTER.md)       |
-| SF Symbols                  | [README-sf-symbols.md](./README-SF-SYMBOLS.md) |
+| SwiftUI                     | [README-swiftui.md](./README-SWIFT-UI.md)      |
 | Android                     | [README-android.md](./README-COMPOSE.md)       |
 
 ### Quick Start Examples
@@ -449,10 +449,10 @@ function MyComponent() {
   return (
     <DgbIconScope>
       {/* Pass icons array directly to DgbIcon */}
-      <DgbIcon icons={dgbHeart} name="heart" iconStyle="fill" />
+      <DgbIcon name="heart" iconStyle="fill" />
 
       {/* Or use a shared array for multiple icons */}
-      <DgbIcon icons={dgbHeart} name="heart" color="red" iconStyle="line" />
+      <DgbIcon name="heart" color="red" iconStyle="line" />
     </DgbIconScope>
   );
 }
@@ -463,8 +463,8 @@ function MyComponent() {
 ```vue
 <template>
   <!-- Pass icons array directly to each DgbIcon -->
-  <DgbIcon :icons="dgbHeart" name="heart" iconStyle="fill" />
-  <DgbIcon :icons="dgbStar" name="star" :color="'gold'" iconStyle="line" />
+  <DgbIcon name="heart" iconStyle="fill" />
+  <DgbIcon name="star" :color="'gold'" iconStyle="line" />
 </template>
 
 <script setup>
@@ -555,4 +555,4 @@ npm bin -g
 
 <hr />
 
-<img src="https://gbiskldbvwxjvxtdxjko.supabase.co/storage/v1/object/public/brand/Logo-Sticker.svg" alt="Digibear Icon Logo" width="42" style="vertical-align: -.9rem;">Copyright© 2025 Digibear Icons
+<img src="https://gbiskldbvwxjvxtdxjko.supabase.co/storage/v1/object/public/brand/Logo-Sticker.svg" alt="Digibear Icon Logo" width="42" style="vertical-align: -.9rem;">Digibear Icons - 2025
