@@ -1,5 +1,12 @@
 # Digibear Icons for Vanilla TypeScript
 
+> ⚠️ IMPORTANT  
+> Digibear Icons is proprietary software owned by Digibear.  
+> This repository documents internal tooling used by Digibear.  
+> Usage is restricted to Digibear-built products only.
+>
+> See LICENSE.md for full terms.
+
 This guide will help you integrate Digibear Icons into your Vanilla TypeScript application using Web Components.
 
 ## Installation
