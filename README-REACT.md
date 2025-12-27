@@ -38,8 +38,6 @@ import {
   DgbIconGroup,
   DgbIconScope,
 } from "./components/digibear-icons";
-// RECOMMENDED: Import from generated definitions
-import { dgbHeart } from "./digibear-icon-definitions";
 
 function MyComponent() {
   return (
@@ -59,8 +57,8 @@ The `DgbIconScope` component provides themes and default properties for all icon
 ```jsx
 import React from "react";
 import { DgbIcon, DgbIconScope } from "./components/digibear-icons";
-// RECOMMENDED: Import from generated definitions
-import { dgbHeart } from "./digibear-icon-definitions";
+// RECOMMENDED: Import the generated registry
+import { dgbIconRegistry } from "./dgb-registry";
 
 function App() {
   // Optional themes configuration
@@ -76,6 +74,7 @@ function App() {
 
   return (
     <DgbIconScope
+      registry={dgbIconRegistry}
       themes={themes}
       defaultTheme="primary"
       defaultVariant="default"
@@ -96,7 +95,6 @@ export default App;
 ```jsx
 import React from "react";
 import { DgbIcon } from "./components/digibear-icons";
-import { dgbHeart } from "./digibear-icon-definitions";
 
 function IconExample() {
   return (
