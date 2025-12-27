@@ -79,8 +79,8 @@ The `DgbIconScope` component provides themes and default properties for all icon
 ```ts
 import { Component } from "@angular/core";
 import { DgbIconComponent, DgbIconScopeComponent } from "@/digibear-icons";
-// RECOMMENDED: Import from generated definitions
-import { dgbHeart } from "./digibear-icon-definitions";
+// RECOMMENDED: Import the generated registry
+import { dgbIconRegistry } from "./dgb-registry";
 
 @Component({
   selector: "app-root",
@@ -88,6 +88,7 @@ import { dgbHeart } from "./digibear-icon-definitions";
   imports: [DgbIconComponent, DgbIconScopeComponent],
   template: `
     <dgb-icon-scope
+      [registry]="registry"
       [themes]="themes"
       defaultTheme="primary"
       defaultVariant="default"
@@ -109,6 +110,8 @@ export class AppComponent {
       },
     },
   };
+
+  registry = dgbIconRegistry;
 }
 ```
 
@@ -119,7 +122,6 @@ export class AppComponent {
 ```ts
 import { Component } from "@angular/core";
 import { DgbIconComponent } from "@/digibear-icons";
-import { dgbHeart } from "./digibear-icon-definitions";
 
 @Component({
   selector: "app-icon-example",
