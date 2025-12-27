@@ -10,7 +10,11 @@
 </div>
 
 <p align="center">
-  <strong>A powerful CLI tool for managing and integrating Digibear Icons into your projects</strong>
+  <strong>Internal CLI tool for managing and generating Digibear Icons</strong>
+</p>
+
+<p align="center">
+  <em>Proprietary tooling used exclusively for Digibear-built products.</em>
 </p>
 
 <p align="center">
@@ -23,6 +27,15 @@
   <a href="#integration">Integration</a>
   <a href="#troubleshooting">Troubleshooting</a>
 </p>
+
+---
+
+> ⚠️ **Important Notice**  
+> Digibear Icons and all related tools are proprietary assets owned by Digibear.  
+> This repository documents internal tooling used to generate icons for products and websites built by Digibear.
+>
+> Use, modification, or redistribution outside of Digibear-built projects is strictly prohibited.  
+> Refer to the LICENSE file for full terms.
 
 ---
 
@@ -390,7 +403,7 @@ The `gen` command can generate various asset formats:
 
 When you scaffold a framework, the CLI will:
 
-1. Create the necessary directory structure in your project
+1. Create the necessary directory structure for the project
 2. Copy all required components, hooks, and utilities
 3. Set up the proper imports and exports
 
@@ -408,7 +421,7 @@ For example, scaffolding React icons will generate:
 
 ## <img src="https://gbiskldbvwxjvxtdxjko.supabase.co/storage/v1/object/public/brand/db-info-badge.svg" alt="Info Icon Inside A Badge" width="26" style="vertical-align: -0.36rem;"> Integration
 
-After scaffolding, you can integrate the icons into your project based on your framework of choice. Each framework has its own specific implementation details.
+After scaffolding, you can integrate the icons into a project based on your framework of choice. Each framework has its own specific implementation details.
 
 ### Framework-Specific Documentation
 
@@ -580,4 +593,4 @@ npm bin -g
 
 <hr />
 
-<img src="https://gbiskldbvwxjvxtdxjko.supabase.co/storage/v1/object/public/brand/Logo-Sticker.svg" alt="Digibear Icon Logo" width="42" style="vertical-align: -.9rem;">Digibear Icons - 2025
+<img src="https://gbiskldbvwxjvxtdxjko.supabase.co/storage/v1/object/public/brand/Logo-Sticker.svg" alt="Digibear Icon Logo" width="42" style="vertical-align: -.9rem;">Digibear Icons - 2025 - All rights reserved.
